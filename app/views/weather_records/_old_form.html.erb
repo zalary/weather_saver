@@ -1,0 +1,63 @@
+<%= form_for(@weather_record, remote:true) do |f| %>
+
+  <div class="field">
+    <%= f.label :zip %><br>
+    <%= f.text_field :zip %><br>
+    <%= f.hidden_field :temp %>
+    <%= f.hidden_field :description %>
+
+  </div>
+    <div class="actions">
+<!--     <input id="test" name="temp" type="hidden"></input>
+    <input id="test2" name="description" type="hidden"></input> -->
+    <%= f.submit :id=> 'get-weather' %>
+  </div>
+<% end %>
+
+<script type="text/javascript">
+  // $("#get-weather").on('click', function (e) {
+  //   e.preventDefault();
+  //   //console.log('Fetching weather...');
+  //   var zip = $('#weather_record_zip').val();
+  //   var auth_token = $('[name="csrf-token"]').attr('content');
+  //   console.log(auth_token);
+  //   var url = "http://api.openweathermap.org/data/2.5/weather?q=" + zip + "  &mode=json&units=imperial";
+
+  // $.ajax({
+  //   type: "GET",
+  //   url: url
+  //    })
+  // .done(function ( msg ) {
+  //   //  $("#new_weather_record").append(msg);
+  //   console.log("The temperature is: " + msg.main.temp);
+  //   var temp = msg.main.temp;
+  //   var describe = msg.weather[0].main.toUpperCase();
+  //   console.log(describe);
+  //   $("#weather_record_temp").val(temp);
+  //   $("#weather_record_description").val(describe);
+  //   $("form").submit()
+
+    // WeatherRecord.create(temp: temp, description: describe, zip, zip);
+   // var blah = {"temp:" temp, "description:" describe, "zip", zip}
+   // var wr_url = '/weather_records&weather_record[temp]=' + temp + ''
+    $.ajax("/weather_records",{
+      dataType: 'json',
+      contentType: 'application/json',
+      type: 'POST',
+      data: JSON.stringify( {
+        authenticity_token: auth_token,
+        weather_record: {
+          temp: temp ,
+          zip: zip ,
+          description: describe
+        }
+    //   }),
+    //   success: function(data){console.log("here"); console.log(data);},
+    //   error: function(data){console.log("here"); console.log(data);}
+    // });
+      // alert('You saved your record!');
+    // });
+
+    // });
+
+</script>

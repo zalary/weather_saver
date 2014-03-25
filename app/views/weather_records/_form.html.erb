@@ -1,0 +1,55 @@
+<%= form_for(@weather_record, remote:true) do |f| %>
+
+  <div class="field">
+    <%= f.label :zip %><br>
+    <%= f.text_field :zip %><br>
+    <%= f.hidden_field :temp %>
+    <%= f.hidden_field :description %>
+
+  </div>
+    <div class="actions">
+<!--     <input id="test" name="temp" type="hidden"></input>
+    <input id="test2" name="description" type="hidden"></input> -->
+    <%= f.submit :id=> 'get-weather' %>
+  </div>
+<% end %>
+
+<script type="text/javascript">
+
+$('#get-weather').on('click', function(e){
+  e.preventDefault();
+  console.log("Fetching weather...")
+  var zip = $('#weather_record_zip').val();
+  // var auth_token = $('[name="csrf-token]').val();
+  console.log('You typed ' + zip);
+
+  var url = "http://api.openweathermap.org/data/2.5/weather?q=" + zip + "&mode=json&units=imperial";
+
+  $.ajax({
+    type: "GET",
+    url: url
+   })
+  .done(function ( msg ) {
+    console.log("The temperature is: " + msg.main.temp);
+    var temp = msg.main.temp;
+    var describe = msg.weather[0].main.toUpperCase();
+    // console.log("The full response: " + data);
+    $.post("/weather_records",{
+      weather_record:{
+        temp: temp,
+        zip: zip,
+        description: describe
+      }
+  });
+alert('You saved your record!');
+ });
+});
+</script>
+
+<!-- .done(function(msg)){}
+
+
+//make a done function and within your done function make a post function
+//authent token
+
+var auth_token = $() -->
